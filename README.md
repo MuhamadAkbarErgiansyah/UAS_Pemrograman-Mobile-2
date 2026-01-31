@@ -1,6 +1,7 @@
 
 ## DEMO APLIKASI
-![Uploading abay.gif…]()
+![abay](https://github.com/user-attachments/assets/12c92fca-1d38-4e88-9037-5a2e483961fc)
+
 
 
 # 🛒 ShopZone - E-Commerce Mobile App
