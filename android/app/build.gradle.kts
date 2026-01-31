@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("com.google.gms.google-services")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -41,4 +42,12 @@ android {
 
 flutter {
     source = "../.."
+}
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
+    implementation("com.google.firebase:firebase-bom:34.7.0")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
 }

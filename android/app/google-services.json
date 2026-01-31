@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "93685497268",
+    "project_id": "shopapp-9bcf6",
+    "storage_bucket": "shopapp-9bcf6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93685497268:android:eb0b91609a8ab4060746e1",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnRX9mS-o-myhIQzzqhLLUdLBcTkHZJis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

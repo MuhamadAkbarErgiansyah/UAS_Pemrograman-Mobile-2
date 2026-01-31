@@ -1,122 +1,189 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'firebase_options.dart';
+import 'core/themes/app_theme.dart';
+import 'providers/auth_provider.dart' as app_auth;
+import 'providers/product_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/wishlist_provider.dart';
+import 'screens/onboarding/onboarding_screen.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/home/main_screen.dart';
+import 'services/shared_pref.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize date formatting for Indonesian locale
+  await initializeDateFormatting('id_ID', null);
+
+  // Set preferred orientations
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // PENTING: Set persistence ke LOCAL agar session tersimpan
+  // Ini akan menyimpan login state di browser/device
+  await firebase_auth.FirebaseAuth.instance
+      .setPersistence(firebase_auth.Persistence.LOCAL);
+
+  // Initialize Supabase
+  await Supabase.initialize(
+    url: 'https://gvmhapmqgwxmqddvgqes.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2bWhhcG1xZ3d4bXFkZHZncWVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY5MTQyNDAsImV4cCI6MjA1MjQ5MDI0MH0.5DmPKxJDlvhn1dIL86PHlZfMfiWLBVYh6JxKn6RLSLc',
+  );
+
+  runApp(const ShopZoneApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ShopZoneApp extends StatelessWidget {
+  const ShopZoneApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => app_auth.AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProxyProvider<app_auth.AuthProvider, CartProvider>(
+          create: (_) => CartProvider(),
+          update: (_, auth, cart) {
+            if (auth.user != null) {
+              cart?.initialize(auth.user!.uid);
+            } else {
+              cart?.clear();
+            }
+            return cart ?? CartProvider();
+          },
+        ),
+        ChangeNotifierProxyProvider<app_auth.AuthProvider, WishlistProvider>(
+          create: (_) => WishlistProvider(),
+          update: (_, auth, wishlist) {
+            if (auth.user != null) {
+              wishlist?.initialize(auth.user!.uid);
+            } else {
+              wishlist?.clear();
+            }
+            return wishlist ?? WishlistProvider();
+          },
+        ),
+      ],
+      child: MaterialApp(
+        title: 'ShopeZone',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        home: const AppStartup(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class AppStartup extends StatefulWidget {
+  const AppStartup({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<AppStartup> createState() => _AppStartupState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _AppStartupState extends State<AppStartup> {
+  bool _isCheckingOnboarding = true;
+  bool _showOnboarding = false;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboarding();
+  }
+
+  Future<void> _checkOnboarding() async {
+    final hasSeenOnboarding =
+        await SharedPreferencesHelper.getBool('has_seen_onboarding') ?? false;
+
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _showOnboarding = !hasSeenOnboarding;
+      _isCheckingOnboarding = false;
+    });
+  }
+
+  Future<void> _completeOnboarding() async {
+    await SharedPreferencesHelper.setBool('has_seen_onboarding', true);
+    setState(() {
+      _showOnboarding = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    // Masih cek onboarding
+    if (_isCheckingOnboarding) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      );
+    }
+
+    // Tampilkan onboarding jika belum pernah dilihat
+    if (_showOnboarding) {
+      return OnboardingScreen(
+        onComplete: _completeOnboarding,
+      );
+    }
+
+    // PENTING: Gunakan StreamBuilder untuk listen Firebase Auth state
+    // Ini akan otomatis detect jika user sudah login sebelumnya
+    return StreamBuilder<firebase_auth.User?>(
+      stream: firebase_auth.FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        // Masih loading auth state
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('Checking login status...'),
+                ],
+              ),
+            ),
+          );
+        }
+
+        // Cek apakah ada user yang sudah login
+        final user = snapshot.data;
+
+        if (user != null) {
+          // User sudah login - initialize cart dan wishlist
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.read<CartProvider>().initialize(user.uid);
+            context.read<WishlistProvider>().initialize(user.uid);
+          });
+
+          debugPrint('✅ User already logged in: ${user.email}');
+          return const MainScreen();
+        }
+
+        // User belum login
+        debugPrint('❌ No user logged in, showing login screen');
+        return const LoginScreen();
+      },
     );
   }
 }
