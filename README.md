@@ -1,3 +1,8 @@
+
+## DEMO APLIKASI
+![Uploading abay.gif…]()
+
+
 # 🛒 ShopZone - E-Commerce Mobile App
 
 Aplikasi E-Commerce modern yang dibangun dengan Flutter untuk memenuhi tugas **UAS Pemrograman Mobile 2**.
