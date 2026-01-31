@@ -1,186 +1,420 @@
-# flutter_application_ecommerce
+# 🛒 ShopZone - E-Commerce Mobile App
 
-A new Flutter project.
+Aplikasi E-Commerce modern yang dibangun dengan Flutter untuk memenuhi tugas **UAS Pemrograman Mobile 2**.
 
-## Getting Started
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
 
-This project is a starting point for a Flutter application.
-name: flutter_application_ecommerce
-description: "ShopZone - Modern E-Commerce App"
-publish_to: 'none'
-version: 1.0.0+1
+---
 
-environment:
-  sdk: ^3.6.0
+## ✨ Fitur Aplikasi
 
-dependencies:
-  flutter:
-    sdk: flutter
+### 👤 User Features
+- **Autentikasi**
+  - Login dengan Email & Password
+  - Login dengan Google
+  - Register akun baru
+  - Forgot Password
+  - Biometric Authentication (Fingerprint/Face ID)
+  
+- **Beranda**
+  - Banner promo carousel
+  - Kategori produk
+  - Produk unggulan
+  - Search produk
+  
+- **Produk**
+  - Daftar produk berdasarkan kategori
+  - Detail produk lengkap
+  - Galeri gambar produk
+  - Rating & review
+  
+- **Keranjang & Checkout**
+  - Tambah/hapus produk ke keranjang
+  - Update quantity
+  - Pilih alamat pengiriman
+  - Pilih metode pembayaran (COD, Transfer Bank, E-Wallet)
+  - Input voucher diskon
+  
+- **Wishlist**
+  - Simpan produk favorit
+  - Sync dengan Firestore
+  
+- **Pesanan**
+  - Riwayat pesanan
+  - Detail pesanan
+  - Tracking status pesanan
+  
+- **Profil**
+  - Lihat informasi profil
+  - Kelola alamat pengiriman
+  
+- **Chat**
+  - Live chat dengan admin
+  - Real-time messaging
 
-  # Firebase
-  firebase_core: ^3.9.0
-  firebase_auth: ^5.4.1
-  cloud_firestore: ^5.6.0
-  firebase_storage: ^12.4.1
+### 👨‍💼 Admin Features
+- **Dashboard**
+  - Statistik penjualan
+  - Total pendapatan
+  - Jumlah pesanan & pengguna
   
-  # Supabase
-  supabase_flutter: ^2.8.3
+- **Manajemen Produk**
+  - Tambah produk baru
+  - Edit produk
+  - Hapus produk
+  - Upload gambar produk
   
-  # State Management
-  provider: ^6.1.2
+- **Manajemen Pesanan**
+  - Lihat semua pesanan
+  - Update status pesanan (Pending → Confirmed → Processing → Shipped → Delivered)
   
-  # Navigation
-  go_router: ^14.8.1
+- **Chat Pelanggan**
+  - Balas chat dari pelanggan
+  - Real-time notification
   
-  # UI Components
-  google_fonts: ^6.2.1
-  flutter_svg: ^2.0.17
-  cached_network_image: ^3.4.1
-  shimmer: ^3.0.0
-  flutter_staggered_grid_view: ^0.7.0
-  carousel_slider: ^5.0.0
-  smooth_page_indicator: ^1.2.0+3
-  badges: ^3.1.2
+- **Manajemen Pengguna**
+  - Lihat daftar pengguna
+  - Filter user/admin
   
-  # Forms & Validation
-  flutter_form_builder: ^9.5.1
-  form_builder_validators: ^11.1.0
-  
-  # Icons
-  iconsax: ^0.0.8
-  
-  # Utils
-  intl: ^0.20.2
-  uuid: ^4.5.1
-  shared_preferences: ^2.3.5
-  connectivity_plus: ^6.1.3
-  
-  # Image
-  image_picker: ^1.1.2
-  
-  # Auth
-  google_sign_in: ^6.2.2
-  
-  # Animations
-  flutter_animate: ^4.5.2
-  lottie: ^3.3.1
+- **Analitik**
+  - Grafik penjualan
+  - Produk terlaris
+  - Statistik pendapatan
 
-  cupertino_icons: ^1.0.8
-  app_links: ^6.4.0
+---
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^5.0.0
+## 🔧 Teknologi & API
 
-flutter:
-  uses-material-design: true
-  
-  assets:
-    - assets/images/
-    - assets/icons/
-    - assets/animations/
-    
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Poppins-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Poppins-Bold.ttf
-          weight: 700        name: flutter_application_ecommerce
-        description: "ShopZone - Modern E-Commerce App"
-        publish_to: 'none'
-        version: 1.0.0+1
-        
-        environment:
-          sdk: ^3.6.0
-        
-        dependencies:
-          flutter:
-            sdk: flutter
-        
-          # Firebase
-          firebase_core: ^3.9.0
-          firebase_auth: ^5.4.1
-          cloud_firestore: ^5.6.0
-          firebase_storage: ^12.4.1
-          
-          # Supabase
-          supabase_flutter: ^2.8.3
-          
-          # State Management
-          provider: ^6.1.2
-          
-          # Navigation
-          go_router: ^14.8.1
-          
-          # UI Components
-          google_fonts: ^6.2.1
-          flutter_svg: ^2.0.17
-          cached_network_image: ^3.4.1
-          shimmer: ^3.0.0
-          flutter_staggered_grid_view: ^0.7.0
-          carousel_slider: ^5.0.0
-          smooth_page_indicator: ^1.2.0+3
-          badges: ^3.1.2
-          
-          # Forms & Validation
-          flutter_form_builder: ^9.5.1
-          form_builder_validators: ^11.1.0
-          
-          # Icons
-          iconsax: ^0.0.8
-          
-          # Utils
-          intl: ^0.20.2
-          uuid: ^4.5.1
-          shared_preferences: ^2.3.5
-          connectivity_plus: ^6.1.3
-          
-          # Image
-          image_picker: ^1.1.2
-          
-          # Auth
-          google_sign_in: ^6.2.2
-          
-          # Animations
-          flutter_animate: ^4.5.2
-          lottie: ^3.3.1
-        
-          cupertino_icons: ^1.0.8
-          app_links: ^6.4.0
-        
-        dev_dependencies:
-          flutter_test:
-            sdk: flutter
-          flutter_lints: ^5.0.0
-        
-        flutter:
-          uses-material-design: true
-          
-          assets:
-            - assets/images/
-            - assets/icons/
-            - assets/animations/
-            
-          fonts:
-            - family: Poppins
-              fonts:
-                - asset: assets/fonts/Poppins-Regular.ttf
-                - asset: assets/fonts/Poppins-Medium.ttf
-                  weight: 500
-                - asset: assets/fonts/Poppins-SemiBold.ttf
-                  weight: 600
-                - asset: assets/fonts/Poppins-Bold.ttf
-                  weight: 700
-A few resources to get you started if this is your first Flutter project:
+### Backend Services
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+| Service | Kegunaan |
+|---------|----------|
+| **Firebase Authentication** | Autentikasi user (Email/Password, Google Sign-In) |
+| **Cloud Firestore** | Database NoSQL untuk menyimpan data (users, products, orders, chats, dll) |
+| **Supabase Storage** | Penyimpanan file/gambar (avatar user, gambar produk) |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Firebase Collections Structure
+
+```
+📁 Firestore Database
+├── 📂 users
+│   └── {userId}
+│       ├── email
+│       ├── displayName
+│       ├── photoUrl
+│       ├── phone
+│       ├── isAdmin
+│       └── createdAt
+│
+├── 📂 products
+│   └── {productId}
+│       ├── name
+│       ├── description
+│       ├── price
+│       ├── images[]
+│       ├── category
+│       ├── stock
+│       ├── rating
+│       └── reviewCount
+│
+├── 📂 orders
+│   └── {orderId}
+│       ├── userId
+│       ├── items[]
+│       ├── totalAmount
+│       ├── status
+│       ├── shippingAddress
+│       ├── paymentMethod
+│       └── createdAt
+│
+├── 📂 carts
+│   └── {userId}
+│       └── items[]
+│
+├── 📂 wishlists
+│   └── {documentId}
+│       ├── userId
+│       └── productId
+│
+├── 📂 chats
+│   └── {chatId}
+│       ├── participants[]
+│       ├── lastMessage
+│       └── updatedAt
+│
+├── 📂 messages
+│   └── {messageId}
+│       ├── chatId
+│       ├── senderId
+│       ├── text
+│       └── timestamp
+│
+├── 📂 addresses
+│   └── {addressId}
+│       ├── userId
+│       ├── recipientName
+│       ├── phone
+│       ├── streetAddress
+│       ├── city
+│       ├── state
+│       ├── postalCode
+│       └── isDefault
+│
+└── 📂 vouchers
+    └── {voucherId}
+        ├── code
+        ├── discountPercent
+        ├── minPurchase
+        ├── maxDiscount
+        ├── validFrom
+        ├── validUntil
+        └── isActive
+```
+
+### Supabase Storage Buckets
+
+```
+📁 Supabase Storage
+├── 📂 avatars/          # Foto profil user
+│   └── {userId}.jpg
+│
+└── 📂 products/         # Gambar produk
+    └── {productId}/
+        └── {imageId}.jpg
+```
+
+---
+
+## 📁 Struktur Folder Project
+
+```
+lib/
+├── main.dart                    # Entry point aplikasi
+├── firebase_options.dart        # Konfigurasi Firebase
+│
+├── config/                      # Konfigurasi aplikasi
+│
+├── core/                        # Core utilities
+│   ├── constants/
+│   │   ├── app_colors.dart      # Warna tema aplikasi
+│   │   ├── app_sizes.dart       # Ukuran standar
+│   │   ├── app_strings.dart     # String constants (EN)
+│   │   └── app_strings_id.dart  # String constants (ID)
+│   │
+│   ├── themes/
+│   │   └── app_theme.dart       # Light & Dark theme
+│   │
+│   └── utils/
+│       ├── formatters.dart      # Format currency, date, dll
+│       ├── helpers.dart         # Helper functions
+│       └── validators.dart      # Form validators
+│
+├── data/
+│   └── models/                  # Data models
+│       ├── user_model.dart
+│       ├── product_model.dart
+│       ├── order_model.dart
+│       ├── cart_item_model.dart
+│       ├── address_model.dart
+│       ├── chat_model.dart
+│       ├── category_model.dart
+│       └── voucher_model.dart
+│
+├── providers/                   # State management (Provider)
+│   ├── auth_provider.dart       # Authentication state
+│   ├── cart_provider.dart       # Shopping cart state
+│   ├── product_provider.dart    # Products state
+│   └── wishlist_provider.dart   # Wishlist state
+│
+├── services/                    # Backend services
+│   ├── auth_service.dart        # Firebase Auth operations
+│   ├── firestore_service.dart   # Firestore CRUD operations
+│   ├── storage_service.dart     # Supabase Storage operations
+│   ├── chat_service.dart        # Chat functionality
+│   ├── order_service.dart       # Order management
+│   ├── voucher_service.dart     # Voucher management
+│   ├── session_service.dart     # Session management
+│   ├── biometric_service.dart   # Biometric auth
+│   └── seed_products.dart       # Seed sample data
+│
+├── screens/                     # UI Screens
+│   ├── auth/
+│   │   ├── login_screen.dart
+│   │   ├── register_screen.dart
+│   │   ├── forgot_password_screen.dart
+│   │   └── admin_login_screen.dart
+│   │
+│   ├── home/
+│   │   ├── home_screen.dart
+│   │   └── main_screen.dart
+│   │
+│   ├── product/
+│   │   ├── product_detail_screen.dart
+│   │   └── products_list_screen.dart
+│   │
+│   ├── cart/
+│   │   └── cart_screen.dart
+│   │
+│   ├── checkout/
+│   │   └── checkout_screen.dart
+│   │
+│   ├── wishlist/
+│   │   └── wishlist_screen.dart
+│   │
+│   ├── orders/
+│   │   ├── orders_screen.dart
+│   │   └── order_detail_screen.dart
+│   │
+│   ├── profile/
+│   │   └── profile_screen.dart
+│   │
+│   ├── address/
+│   │   ├── addresses_screen.dart
+│   │   └── add_address_screen.dart
+│   │
+│   ├── chat/
+│   │   └── user_chat_screen.dart
+│   │
+│   ├── search/
+│   │   └── search_screen.dart
+│   │
+│   ├── onboarding/
+│   │   └── onboarding_screen.dart
+│   │
+│   └── admin/
+│       ├── admin_main_screen.dart
+│       ├── admin_dashboard_screen.dart
+│       ├── admin_products_screen.dart
+│       ├── add_product_screen.dart
+│       ├── admin_orders_screen.dart
+│       ├── admin_chats_screen.dart
+│       ├── admin_chat_detail_screen.dart
+│       ├── admin_users_screen.dart
+│       └── admin_analytics_screen.dart
+│
+└── widgets/                     # Reusable widgets
+    ├── common/
+    │   ├── custom_button.dart
+    │   ├── custom_text_field.dart
+    │   ├── loading_indicator.dart
+    │   └── empty_state.dart
+    │
+    ├── product/
+    │   └── product_card.dart
+    │
+    └── cart/
+        └── cart_item_tile.dart
+```
+
+---
+
+## 🚀 Cara Menjalankan Project
+
+### Prerequisites
+- Flutter SDK (>=3.6.0)
+- Dart SDK
+- Android Studio / VS Code
+- Firebase account
+- Supabase account
+
+### Installation
+
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/MuhamadAkbarErgiansyah/UAS_Pemrograman-Mobile-2.git
+   cd UAS_Pemrograman-Mobile-2
+   ```
+
+2. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
+
+3. **Setup Firebase**
+   - Buat project di [Firebase Console](https://console.firebase.google.com)
+   - Enable Authentication (Email/Password & Google)
+   - Enable Cloud Firestore
+   - Download `google-services.json` (Android) dan `GoogleService-Info.plist` (iOS)
+   - Jalankan `flutterfire configure`
+
+4. **Setup Supabase**
+   - Buat project di [Supabase](https://supabase.com)
+   - Buat bucket storage: `avatars` dan `products`
+   - Set bucket policy ke public
+   - Copy URL dan Anon Key ke `lib/main.dart`
+
+5. **Run aplikasi**
+   ```bash
+   # Android/iOS
+   flutter run
+   
+   # Web
+   flutter run -d chrome
+   ```
+
+### Build untuk Production
+
+```bash
+# Android APK
+flutter build apk --release
+
+# Android App Bundle
+flutter build appbundle --release
+
+# iOS
+flutter build ios --release
+
+# Web
+flutter build web --release
+```
+
+---
+
+## 📦 Dependencies
+
+| Package | Version | Kegunaan |
+|---------|---------|----------|
+| firebase_core | ^3.9.0 | Firebase initialization |
+| firebase_auth | ^5.4.1 | Authentication |
+| cloud_firestore | ^5.6.0 | NoSQL Database |
+| supabase_flutter | ^2.8.3 | Storage & Realtime |
+| provider | ^6.1.2 | State management |
+| google_sign_in | ^6.2.2 | Google OAuth |
+| local_auth | ^2.3.0 | Biometric auth |
+| google_fonts | ^6.2.1 | Custom fonts |
+| cached_network_image | ^3.4.1 | Image caching |
+| carousel_slider | ^5.0.0 | Banner carousel |
+| flutter_animate | ^4.5.2 | Animations |
+| image_picker | ^1.1.2 | Pick images |
+| intl | ^0.20.2 | Internationalization |
+| shared_preferences | ^2.3.5 | Local storage |
+
+---
+
+## 👨‍💻 Developer
+
+**Muhamad Akbar Ergiansyah**
+
+- GitHub: [@MuhamadAkbarErgiansyah](https://github.com/MuhamadAkbarErgiansyah)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Flutter Team
+- Firebase Team
+- Supabase Team
+- Dosen Pemrograman Mobile 2
+
+---
+
+⭐ **Jika project ini bermanfaat, jangan lupa beri bintang!** ⭐
