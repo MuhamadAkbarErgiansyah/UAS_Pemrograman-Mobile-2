@@ -408,12 +408,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🙏 Acknowledgments
+## LAMPIRAN
+https://incandescent-bunny-d85809.netlify.app/
 
-- Flutter Team
-- Firebase Team
-- Supabase Team
-- Dosen Pemrograman Mobile 2
+
 
 ---
 
